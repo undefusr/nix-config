@@ -28,7 +28,7 @@ in
     easyCerts = true;
     apiserver = {
       securePort = kubeMasterAPIServerPort;
-      # advertiseAddress = kubeMasterIP;
+      #   advertiseAddress = kubeMasterIP;
     };
 
     # use coredns

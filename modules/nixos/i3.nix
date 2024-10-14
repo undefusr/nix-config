@@ -7,6 +7,11 @@
 
   # i3 related options
   environment.pathsToLink = [ "/libexec" ]; # links /libexec from derivations to /run/current-system/sw
+
+  # environment.variables = {
+  #   XCURSOR_SIZE = "32"; # Replace with your desired cursor size
+  # };
+
   services.displayManager.defaultSession = "none+i3";
   services = {
     gvfs.enable = true; # Mount, trash, and other functionalities
@@ -17,7 +22,7 @@
 
       desktopManager = {
         xterm.enable = false;
-        # wallpaper.mode = "scale";
+        wallpaper.mode = "scale";
       };
       displayManager = {
         lightdm.enable = true;
@@ -31,9 +36,8 @@
         extraPackages = with pkgs; [
           rofi # application launcher, the same as dmenu
           dunst # notification daemon
+          dmenu
           i3blocks # status bar
-          i3lock # default i3 screen locker
-          xautolock # lock screen after some time
           i3status # provide information to i3bar
           i3-gaps # i3 with gaps
           picom # transparency and shadows
@@ -44,10 +48,7 @@
           xbindkeys # bind keys to commands
           # xorg.xbacklight # control screen brightness, the same as light
           xorg.xdpyinfo # get screen information
-          scrot # minimal screen capture tool, used by i3 blur lock to take a screenshot
           sysstat # get system information
-          alsa-utils # provides amixer/alsamixer/...
-
           xfce.thunar # xfce4's file manager
         ];
       };
@@ -55,7 +56,7 @@
 
       xkb = {
         layout = "us";
-        variant = "dvorak";
+        variant = "";
       };
     };
   };
@@ -66,3 +67,4 @@
     thunar-volman
   ];
 }
+

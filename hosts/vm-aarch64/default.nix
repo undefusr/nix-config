@@ -1,27 +1,9 @@
-{ config, pkgs, pkgs-unstable, ... }:
-{
-  imports =
-    [
-      ./hardware-configuration.nix
-      ./vm-guest.nix
-      ../../modules/user.nix
-      ../../modules/core.nix
-      ../../modules/i3.nix
-      ../../modules/kubernetes.nix
-    ];
-
-  # Bootloader.
-  boot.loader.systemd-boot.enable = true;
-  boot.loader.systemd-boot.consoleMode = "0";
-  boot.loader.efi.canTouchEfiVariables = true;
-  boot.loader.timeout = null;
-
-  # Don't require password for sudo
-  security.sudo.wheelNeedsPassword = false;
-
-  # Enable networking
-  networking.networkmanager.enable = true;
-
+{ ... }: {
+  imports = [
+    ./hardware-configuration.nix
+    ../modules/vmware-guest.nix
+    ../.
+  ];
 
   # Setup qemu so we can run x86_64 binaries
   boot.binfmt.emulatedSystems = [ "x86_64-linux" ];
@@ -53,6 +35,4 @@
       "defaults"
     ];
   };
-
-  system.stateVersion = "24.05";
 }
