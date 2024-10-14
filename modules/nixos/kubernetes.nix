@@ -28,12 +28,12 @@ in
     easyCerts = true;
     apiserver = {
       securePort = kubeMasterAPIServerPort;
-      # advertiseAddress = kubeMasterIP;
+    #   advertiseAddress = kubeMasterIP;
     };
-
+    
     # use coredns
     addons.dns.enable = true;
-
+    
     # needed if you use swap
     kubelet.extraOpts = "--fail-swap-on=false";
   };

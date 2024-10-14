@@ -4,36 +4,44 @@
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixos-24.05";
     nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
-    nixpkgs-unstable-small.url = "github:NixOS/nixpkgs/nixos-unstable-small";
-    ghostty.url = "git+ssh://git@github.com/ghostty-org/ghostty";
-  };
-
-  outputs = inputs@{ self, nixpkgs, nixpkgs-unstable, nixpkgs-unstable-small, ghostty, ... }:
-    let
-      username = "undefusr";
-    in
-    {
-      nixosConfigurations."vm-aarch64" = nixpkgs.lib.nixosSystem rec {
-        system = "aarch64-linux";
-        specialArgs = {
-          inherit username;
-          pkgs-unstable = import nixpkgs-unstable {
-            inherit system;
-            config.allowUnfree = true;
-          };
-        };
-        environment.systemPackages = [
-          ghostty.packages.aarch64-linux.default
-        ];
-        modules = [
-          ./hosts/vmware/default.nix
-        ];
-      };
+    home-manager = {
+      url = "github:nix-community/home-manager/release-24.05";
+      inputs.nixpkgs.follows = "nixpkgs";
     };
 
-  nixConfig = {
-    experimental-features = [ "nix-command" "flakes" ];
-    keep-outputs = true;
-    keep-derivations = true;
+    darwin = {
+      url = "github:LnL7/nix-darwin";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
+    neovim-nightly-overlay = {
+      url = "github:nix-community/neovim-nightly-overlay";
+      inputs.nixpkgs.follows = "nixpkgs-unstable";
+    };
+
+    zig.url = "github:mitchellh/zig-overlay";
   };
+
+  outputs = inputs@{ self, nixpkgs, nixpkgs-unstable, home-manager, darwin, ... }:
+    let
+      overlays = [
+        inputs.zig.overlays.default
+      ];
+      mkSystem = import ./lib/mksystem.nix {
+        inherit overlays nixpkgs inputs;
+      };
+    in
+    {
+      nixosConfigurations.vm-aarch64 = mkSystem "vm-aarch64" {
+        system = "aarch64-linux";
+        user = "undefusr";
+      };
+
+      # darwinConfigurations.macbook-pro-m3 = mkSystem "macbook-pro-m3" {
+      #   system = "aarch64-darwin";
+      #   user = "undefusr";
+      #   darwin = true;
+      # };
+    };
+
 }
