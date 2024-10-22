@@ -1,4 +1,4 @@
-{ pkgs, lib, pkgs-unstable, ... }:
+{ pkgs, lib, pkgs-unstable, inputs, ... }:
 {
   # for nix server, we do not need to keep too much generations
   boot.loader.systemd-boot.configurationLimit = lib.mkDefault 10;
@@ -74,6 +74,7 @@
     fontDir.enable = true;
 
     packages = [
+      inputs.monolisa
       pkgs.fira-code
       pkgs.jetbrains-mono
     ];
@@ -88,7 +89,6 @@
     vim
     gnumake
     killall
-    pkgs-unstable.neovim
     niv
     rxvt_unicode
     xclip
@@ -96,7 +96,8 @@
     git-lfs
     firefox
     alacritty
-    neofetch
+    fastfetch
+    inputs.ghostty.packages.aarch64-linux.default
     (writeShellScriptBin "xrandr-auto" ''
       xrandr --output Virtual-1 --auto
     '')

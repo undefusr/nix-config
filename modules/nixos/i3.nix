@@ -56,7 +56,7 @@
 
       xkb = {
         layout = "us";
-        variant = "";
+        variant = "us,dvorak";
       };
     };
   };

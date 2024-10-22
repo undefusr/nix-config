@@ -1,0 +1,329 @@
+format = """
+$os$directory\
+$git_branch\
+$git_state\
+$git_status\
+$golang\
+$hostname\
+$terraform\
+$golang\
+$lua\
+$zig\
+$nix_shell
+$shell$character
+"""
+right_format = "$jobs$direnv$kubernetes$aws$cmd_duration"
+continuation_prompt = "[∙](bright-black) "
+scan_timeout = 30
+command_timeout = 500
+add_newline = true
+follow_symlinks = true
+
+[aws]
+format = 'on [$symbol($profile )(\($region\) )(\[$duration\] )]($style)'
+symbol = "  "
+style = "bold yellow"
+disabled = false
+expiration_symbol = "X"
+force_display = false
+
+[aws.region_aliases]
+
+[aws.profile_aliases]
+
+[character]
+format = "$symbol "
+success_symbol = "[➜](bold green)"
+error_symbol = "[➜](bold red)"
+vimcmd_symbol = "[](bold green)"
+vimcmd_visual_symbol = "[](bold yellow)"
+vimcmd_replace_symbol = "[](bold purple)"
+vimcmd_replace_one_symbol = "[](bold purple)"
+disabled = false
+
+[os]
+format = "[$symbol]($style)"
+style = "white bold"
+disabled = false
+
+[os.symbols]
+Macos = " "
+Linux = "󰌽 "
+NixOS = " "
+
+[cmd_duration]
+min_time = 2000
+format = "took [$duration]($style) "
+style = "yellow bold"
+show_milliseconds = false
+disabled = true
+show_notifications = false
+min_time_to_notify = 45000
+
+[directory]
+truncation_length = 3
+truncate_to_repo = true
+fish_style_pwd_dir_length = 0
+use_logical_path = true
+format = "[$path]($style)[$read_only]($read_only_style) "
+repo_root_format = "[$before_root_path]($before_repo_root_style)[$repo_root]($repo_root_style)[$path]($style)[$read_only]($read_only_style) "
+style = "cyan bold"
+disabled = false
+read_only = " 󰌾"
+read_only_style = "red"
+truncation_symbol = ""
+home_symbol = "~"
+use_os_path_sep = true
+
+[directory.substitutions]
+
+[direnv]
+format = "[$symbol$loaded/$allowed]($style) "
+symbol = "direnv "
+style = "bold bright-yellow"
+disabled = true
+detect_extensions = []
+detect_files = [".envrc"]
+detect_folders = []
+allowed_msg = "allowed"
+not_allowed_msg = "not allowed"
+denied_msg = "denied"
+loaded_msg = "loaded"
+unloaded_msg = "not loaded"
+
+[docker_context]
+symbol = " "
+style = "blue bold"
+format = "via [$symbol$context]($style) "
+only_with_files = true
+disabled = false
+detect_extensions = []
+detect_files = [
+    "docker-compose.yml",
+    "docker-compose.yaml",
+    "Dockerfile",
+]
+detect_folders = []
+
+[env_var.SERVICE_ENV]
+
+[git_branch]
+format = "on [$symbol$branch(:$remote_branch)]($style) "
+symbol = " "
+style = "bold purple"
+truncation_length = 9223372036854775807
+truncation_symbol = "…"
+only_attached = false
+always_show_remote = false
+ignore_branches = []
+disabled = false
+
+[git_commit]
+commit_hash_length = 7
+format = '[\($hash$tag\)]($style) '
+style = "green bold"
+only_detached = false
+disabled = true
+tag_symbol = '  '
+tag_disabled = false
+tag_max_candidates = 0
+
+[git_metrics]
+disabled = true
+
+[git_state]
+rebase = "REBASING"
+merge = "MERGING"
+revert = "REVERTING"
+cherry_pick = "CHERRY-PICKING"
+bisect = "BISECTING"
+am = "AM"
+am_or_rebase = "AM/REBASE"
+style = "bold yellow"
+format = '\([$state( $progress_current/$progress_total)]($style)\) '
+disabled = false
+
+[git_status]
+format = '([\[$all_status$ahead_behind\]]($style) )'
+style = "red bold"
+stashed = '\$'
+ahead = "⇡"
+behind = "⇣"
+up_to_date = ""
+diverged = "󰹹"
+conflicted = "="
+deleted = "✘"
+renamed = "»"
+modified = "!"
+staged = "+"
+untracked = "?"
+typechanged = ""
+ignore_submodules = false
+disabled = false
+
+[golang]
+format = "via [$symbol($version )]($style)"
+version_format = "v${raw}"
+symbol = " "
+style = "bold cyan"
+disabled = false
+not_capable_style = "bold red"
+detect_extensions = ["go"]
+detect_files = [
+    "go.mod",
+    "go.sum",
+    "go.work",
+    "glide.yaml",
+    "Gopkg.yml",
+    "Gopkg.lock",
+    ".go-version",
+]
+detect_folders = ["Godeps"]
+
+[hostname]
+ssh_only = true
+ssh_symbol = " "
+trim_at = "."
+detect_env_vars = []
+format = "[$ssh_symbol$hostname]($style) in "
+style = "green dimmed bold"
+disabled = false
+
+[hostname.aliases]
+
+[jobs]
+threshold = 1
+symbol_threshold = 1
+number_threshold = 2
+format = "[$symbol$number]($style) "
+symbol = " "
+style = "bold blue"
+disabled = false
+
+[kubernetes]
+symbol = "󱃾 "
+format = '[$symbol$context( \($namespace\))]($style) in '
+style = "cyan bold"
+disabled = true
+detect_extensions = []
+detect_files = []
+detect_folders = []
+detect_env_vars = []
+contexts = []
+
+[kubernetes.context_aliases]
+
+[kubernetes.user_aliases]
+
+[lua]
+format = "via [$symbol($version )]($style)"
+version_format = "v${raw}"
+symbol = " "
+style = "bold blue"
+lua_binary = "lua"
+disabled = false
+detect_extensions = ["lua"]
+detect_files = [".lua-version"]
+detect_folders = ["lua"]
+
+[nix_shell]
+format = 'via [$symbol$state( \($name\))]($style) '
+symbol = " "
+style = "bold blue"
+impure_msg = "impure"
+pure_msg = "pure"
+unknown_msg = ""
+disabled = false
+heuristic = false
+
+[python]
+pyenv_version_name = false
+pyenv_prefix = "pyenv "
+python_binary = [
+    "python",
+    "python3",
+    "python2",
+]
+format = 'via [${symbol}${pyenv_prefix}(${version} )(\($virtualenv\) )]($style)'
+version_format = "v${raw}"
+style = "yellow bold"
+symbol = " "
+disabled = false
+detect_extensions = [
+    "py",
+    "ipynb",
+]
+detect_files = [
+    "requirements.txt",
+    ".python-version",
+    "pyproject.toml",
+    "Pipfile",
+    "tox.ini",
+    "setup.py",
+    "__init__.py",
+    "pixi.toml",
+]
+detect_folders = []
+detect_env_vars = ["VIRTUAL_ENV"]
+
+[rust]
+format = "via [$symbol($version )]($style)"
+version_format = "v${raw}"
+symbol = "󱘗 "
+style = "bold red"
+disabled = false
+detect_extensions = ["rs"]
+detect_files = ["Cargo.toml"]
+detect_folders = []
+
+[terraform]
+format = "via [$symbol$workspace]($style) "
+version_format = "v${raw}"
+symbol = "󱁢 "
+style = "bold 105"
+disabled = false
+detect_extensions = [
+    "tf",
+    "tfplan",
+    "tfstate",
+]
+detect_files = []
+detect_folders = [".terraform"]
+
+[time]
+format = "[$time]($style)"
+style = "bold yellow"
+use_12hr = false
+disabled = true
+tc_time_offset = "local"
+time_range = "-"
+
+[username]
+detect_env_vars = []
+format = "[$user]($style) in "
+style_root = "red bold"
+style_user = "yellow bold"
+show_always = true
+disabled = false
+
+[username.aliases]
+
+[zig]
+format = "via [$symbol($version )]($style)"
+version_format = "v${raw}"
+symbol = " "
+style = "bold yellow"
+disabled = false
+detect_extensions = ["zig"]
+detect_files = []
+detect_folders = []
+
+[shell]
+format = "[$indicator]($style) "
+bash_indicator = ""
+fish_indicator = ""
+zsh_indicator = "󰰶"
+nu_indicator = "󰰒"
+unknown_indicator = ""
+style = "white bold"
+disabled = true

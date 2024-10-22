@@ -20,14 +20,15 @@
     };
 
     zig.url = "github:mitchellh/zig-overlay";
+
+    ghostty.url = "git+ssh://git@github.com/ghostty-org/ghostty?ref=main";
+
+    monolisa.url = "git+ssh://git@github.com/undefusr/monolisa?ref=main";
+    monolisa.flake = false;
   };
 
   outputs = inputs@{ self, nixpkgs, nixpkgs-unstable, nix-darwin, home-manager, ... }:
     let
-      username = "undefusr";
-      userfullname = "Undefined User";
-      useremail = "undefusr@proton.me";
-
       overlays = [
         inputs.zig.overlays.default
       ];
@@ -37,28 +38,30 @@
           ./hosts/vm-aarch64
           ./modules/nixos/user.nix
           ./modules/nixos/i3.nix
-          ./modules/nixos/kubernetes.nix
         ];
-        home-modules = import ./home/core.nix;
+      };
+
+      macbook = {
+        darwin-modules = [
+          ./hosts/darwin
+        ];
       };
 
       mkSystem = import ./lib/mksystem.nix {
-        inherit nixpkgs overlays inputs username userfullname useremail;
+        inherit nixpkgs overlays inputs;
       };
     in
     {
       nixosConfigurations.vm-aarch64 = mkSystem "vm-aarch64" {
         system = "aarch64-linux";
         host-modules = vmware_i3.nixos-modules;
-        home-module = vmware_i3.home-modules;
       };
 
-      # darwinConfigurations.macbook-pro-m3 = mkSystem "macbook-pro-m3" {
-      #   system = "aarch64-darwin";
-      #   modules = [];
-      #   home-modules = [];
-      #   darwin = true;
-      # };
+      darwinConfigurations.macbook-pro-mx = mkSystem "macbook-pro-mx" {
+        system = "aarch64-darwin";
+        host-modules = macbook.darwin-modules;
+        darwin = true;
+      };
     };
 
 }

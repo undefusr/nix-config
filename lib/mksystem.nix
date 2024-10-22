@@ -1,18 +1,20 @@
 # This function creates a NixOS system based on our VM setup for a
 # particular architecture.
-{ nixpkgs, overlays, inputs, username, userfullname, useremail }:
+{ nixpkgs, overlays, inputs }:
 
 name:
 { system ? "aarch64-linux"
 , darwin ? false
+, username ? "undefusr"
+, useremail ? "undefusr@proton.me"
+, userfullname ? "Undefined User"
 , host-modules ? [ ]
-, home-module
 }:
 let
   # NixOS vs nix-darwin functionst
   systemFunc =
     if darwin then
-      inputs.darwin.lib.darwinSystem
+      inputs.nix-darwin.lib.darwinSystem
     else
       nixpkgs.lib.nixosSystem;
 
@@ -24,12 +26,12 @@ let
 
   specialArgs =
     {
-      inherit username userfullname useremail;
+      inherit username userfullname useremail darwin inputs;
       pkgs-unstable = import inputs.nixpkgs-unstable {
         system = system;
         config.allowUnfree = true;
       };
-    } // inputs;
+    };
 in
 systemFunc rec {
   inherit system specialArgs;
@@ -42,8 +44,9 @@ systemFunc rec {
     {
       home-manager.useGlobalPkgs = true;
       home-manager.useUserPackages = true;
+      home-manager.backupFileExtension = "hm-backup";
       home-manager.extraSpecialArgs = specialArgs;
-      home-manager.users.${username} = home-module;
+      home-manager.users.${username} = import ../users/${if darwin then "darwin" else "nixos" }/home.nix;
     }
   ];
 }

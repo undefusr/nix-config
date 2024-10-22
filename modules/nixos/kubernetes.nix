@@ -19,6 +19,9 @@ in
     openssl
     cfssl
     k9s
+    (writeShellScriptBin "setup-kube" ''
+      rm -rf ~/.kube && mkdir ~/.kube && ln -sf /etc/kubernetes/cluster-admin.kubeconfig ~/.kube/config && chmod 644 /var/lib/kubernetes/secrets/*.pem
+    '')
   ];
 
   services.kubernetes = {

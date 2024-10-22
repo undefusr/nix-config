@@ -2,7 +2,7 @@
   imports = [
     ./hardware-configuration.nix
     ../modules/vmware-guest.nix
-    ../.
+    ../default-nixos.nix
   ];
 
   # Setup qemu so we can run x86_64 binaries

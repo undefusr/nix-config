@@ -1,0 +1,29 @@
+# theme = system
+window-theme = auto
+# background = #ffffff
+# background = 000000
+window-padding-x = 12
+window-padding-y = 10
+window-padding-balance = true
+font-family = "MonoLisa"
+font-size = 13
+cursor-style = block
+
+clipboard-read = allow
+clipboard-write = allow
+copy-on-select = true
+
+macos-titlebar-style = tabs
+shell-integration = detect
+
+# Allow option to work as alt on macos
+# macos-option-as-alt = true
+cursor-style-blink = false
+
+cursor-invert-fg-bg = true
+shell-integration-features = no-cursor,no-sudo,title
+background-opacity = 0.95
+background-blur-radius = 20
+
+# Always show ghostty as the title
+# title = ghostty
